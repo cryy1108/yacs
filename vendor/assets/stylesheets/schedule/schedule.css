@@ -48,17 +48,12 @@ grid-hour:last-child {
   border-bottom: none;
 }
 
-/*
-grid-hour:nth-child(2n) {
-  background-color: #e2e2e2;
-}
-*/
 
 schedule-event {
   position: absolute;
   margin-top: 1px;
   border-left: 4px solid;
-  border-opacity: 1;
+  border-opacity: 1em;
 }
 
 event-background {

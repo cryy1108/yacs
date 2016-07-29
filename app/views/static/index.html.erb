@@ -1,32 +1,141 @@
-<nav id="headerbar">
-  <table id="navtable">
-    <tr>
-      <td class="sidelink" id="page-title">YACS <span class="sub">beta</span></td>
-      <td>
-        <span id="searchcontainer">
-          <span>find your</span>
-          <input id="searchbar" placeholder="course, professor, department..."></input>
-        </span>
-      </td>
-      <td class="sidelink" id="schedule-btn">Schedule</td>
-    </tr>
-  </table>
-</nav>
+<head>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <style>
+  .ui-autocomplete {
+    max-height: 200px;
+    overflow-y: scroll;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 300;
+    width: 160px;
+    padding: 4px 0;
+    margin: 2px 0 0 0;
+    list-style: none;
+    background-color: #944;
+    opacity: 0.8;
+    border-color: #ffffff;
+    border-color: rgba(0, 0, 0, 0.2);
+    border-style: solid;
+    border-width: 1px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+    *border-right-width: 2px;
+    *border-bottom-width: 2px;
+  }
+  .ui-autocomplete .ui-state-hover,
+  .ui-autocomplete .ui-state-focus,
+  .ui-autocomplete .ui-state-active {
+    color: #944;
+    background-color: #ffffff;
+    border-radius: 0px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    font-size: 15px;
+    font-weight: 300;
+  }
+  /* IE 6 doesn't support max-height
+  * we use height instead, but this forces the menu to always be this tall
+  */
+  * html .ui-autocomplete {
+      height: 200px;
+  }
+  </style>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $("#searchbar").autocomplete({
+      source: function(request, response) {
+        $.ajax({
+                url: "/api/v5/courses.json",
+                dataType: "json",
+                data: {
+                    query: request.term
+                },
+                success: function(data) { 
+                  var transformed = $.map(data.courses,function(item) {
+                    // return {
+                    //   label: item.name,
+                    //   value: item.number
+                    // };
+                    return item.name;
+                  });
+                  makeJsonSearch(transformed);
+                  // if (data.length === 0) {
+                  //   $("#no-results").text("No results found!");
+                  // } 
+                  // $("#courses").autocomplete({
+                  //   source: source,
+                  // });
+                }
+            });
+        }
+    })
+    // .autocomplete( "instance" )._renderItem = function( ul, item ) {
+    //   return $( "<li>" )
+    //     .append( "<div>" + item.name + "<br />" + item.number + "</div>" )
+    //     .appendTo( ul );
+    // };
 
-<div id="content">
-  <noscript>
-    YACS requires Javascript to work. Please enable Javascript to use YACS.
-  </noscript>
-  <%= image_tag 'loading.gif', id: 'loading' %>
-</div>
+    function makeJsonSearch(jsonSource) {
+      $("#searchbar").removeAttr("disabled");
+      $("#searchbar").autocomplete({
+          source: jsonSource,
+          // select: function (event, ui) {
+          //     $(this).views.courses(ui.item.name);
+          // },
+          open: function () {
+              $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+          },
+          close: function () {
+              $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+          }
+      });
+    }
+  });
+  </script>
+</head>
 
-<footer>
-  <div class="footer-column">
-    <div>A Red Hat-supported RCOS project.</div>
-    <div>Inspired by Jeff Hui's YACS.</div>
+<body>
+   <nav id="headerbar">
+    <table id="navtable">
+      <tr>
+        <td class="sidelink" id="page-title">YACS <span class="sub">beta</span></td>
+        <td>
+          <span class="ui-widget" id="searchcontainer">
+              <span>find your</span>
+              <input id="searchbar" placeholder="course, professor, department..."></input>
+          </span>
+        </td>
+        <td class="sidelink" id="schedule-btn">Schedule</td>
+      </tr>
+    </table>
+  </nav>
+ 
+
+  <div id="content">
+    <noscript>
+      YACS requires Javascript to work. Please enable Javascript to use YACS.
+    </noscript>
+    <%= image_tag 'loading.gif', id: 'loading' %>
   </div>
-  <div class="footer-column">
-    <div>Yacs v0.7 - Newer and Bluer Horizons</div>
-    <div>How's our driving? yacsrpi@gmail.com</div>
-  </div>
-</footer>
+
+  <footer>
+    <div class="footer-column">
+      <div>A Red Hat-supported RCOS project.</div>
+      <div>Inspired by Jeff Hui's YACS.</div>
+    </div>
+    <div class="footer-column">
+      <div>Yacs v0.7 - Newer and Bluer Horizons</div>
+      <div>How's our driving? yacsrpi@gmail.com</div>
+    </div>
+  </footer>
+</body>

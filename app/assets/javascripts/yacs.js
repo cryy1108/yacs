@@ -213,6 +213,12 @@ Yacs.views.header = function () {
   var homeButton = document.getElementById('page-title');
   var searchbar = document.getElementById('searchbar');
   var scheduleButton = document.getElementById("schedule-btn");
+
+  // var script = document.createElement('script');
+  // script.src = 'http://code.jquery.com/jquery-1.11.0.min.js';
+  // script.type = 'text/javascript';
+  // document.getElementsByTagName('head')[0].appendChild(script);
+
   Yacs.on('click', homeButton, function () { Yacs.views.departments(); });
   Yacs.on('click', scheduleButton, function () {
     Yacs.models.schedules.query({ section_ids: Yacs.user.getSelectionsRaw(),
@@ -223,13 +229,27 @@ Yacs.views.header = function () {
         }
     );
   });
+
+
   Yacs.on('keydown', document, function (elem, event) {
     var key = event.keyCode;
     if (!(event.ctrlKey || event.metaKey)) {
       if (key >= 32 && key <= 127) {
         if (key == 127 && searchbar.value.length <= 1)
           Yacs.views.departments();
-        searchbar.focus();
+        // }
+        // var options = {
+        //   url: "/api/v5/courses.json",
+        //   getValue: "name",
+
+        //   list: {
+        //     match: {
+        //       enabled: true
+        //     }
+        //   }
+        // };
+        // $("#searchbar").autocomplete({ source: options });
+        //searchbar.focus();
       } else if (key == 13) {
         if (searchbar.value) {
           Yacs.models.courses.query({ search: searchbar.value,
@@ -242,14 +262,14 @@ Yacs.views.header = function () {
         } else {
           Yacs.views.departments();
         }
-      } else if ((key == 8 || key == 46) && searchbar.value.length <= 1) {
-        Yacs.views.departments();
+      // } else if ((key == 8 || key == 46) && searchbar.value.length <= 1) {
+      //   Yacs.views.departments();
       }
     }
   });
   // Yacs.on('click', document.body, function () { searchbar.focus() });
   // TODO lol previous line was a bit of an oversight, must emulate caret
-  searchbar.focus();
+  //searchbar.focus();
 };
 
 /* ======================================================================== *

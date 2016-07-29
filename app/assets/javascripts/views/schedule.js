@@ -67,16 +67,17 @@ Yacs.views.schedule = function (data) {
 
   if(data.schedules.length == 0) {
     // TODO: this will happen if there are no available schedules
+    crnListElement.textContent = 'No courses selected';
     return;
   }
 
   Yacs.on('click', leftSwitchElement, function () {
     scheduleIndex = (--scheduleIndex < 0 ? data.schedules.length - 1 : scheduleIndex);
-    showSchedule(scheduleIndex);
+    showSchedule(scheduleIndex%data.schedules.length);
   });
   Yacs.on('click', rightSwitchElement, function () {
     scheduleIndex = (++scheduleIndex < data.schedules.length ? scheduleIndex : 0);
-    showSchedule(scheduleIndex);
+    showSchedule(scheduleIndex%data.schedules.length);
   });
 
   showSchedule(scheduleIndex);

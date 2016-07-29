@@ -40,14 +40,16 @@
 }
 
 .clear-button {
-    border: solid;
+    cursor: pointer;
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 15px;
+    font-weight: 100;
+    padding: 2px 4px;
+    color: white;
+    background-color: #d67d77;
     border-radius: 1px;
-    border-width: 2px;
-    border-color: #c65353;
-    background-color: #ffffff;
-    color: #863838;
-    padding: 2px 4px 0px 4px;
-    font-size: 18px;
+    opacity: 0.9;
+    margin-left: 1em;
 }
 
 .clear-button:focus {

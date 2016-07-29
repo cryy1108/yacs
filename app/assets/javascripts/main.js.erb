@@ -66,6 +66,22 @@ function setupPage() {
     }
   });
 
+function AutoSuggestControl(oTextbox, oProvider) {
+    this.provider = oProvider;
+    this.textbox = oTextbox;
+}
+AutoSuggestControl.prototype.selectRange = function (iStart, iLength) {
+    if (this.textbox.createTextRange) {
+        var oRange = this.textbox.createTextRange();
+        oRange.moveStart("character", iStart);
+        oRange.moveEnd("character", iLength - this.textbox.value.length);
+        oRange.select();
+    } else if (this.textbox.setSelectionRange) {
+        this.textbox.setSelectionRange(iStart, iLength);
+    }
+
+    this.textbox.focus();
+}
   // General keydown event listener.
   // It goes here because global keyboard events should be bound to document,
   // and that only once.
